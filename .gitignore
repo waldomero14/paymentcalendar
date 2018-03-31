@@ -1,0 +1,5 @@
+/vendor
+.directory
+.vars.env
+.idea
+.csv

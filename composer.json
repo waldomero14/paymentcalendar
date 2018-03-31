@@ -1,0 +1,17 @@
+{
+  "name": "walter.velasquez/payment-calendar",
+  "description": "Inviqa hiring test",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Walter Velasquez",
+      "email": "wivan.vel@gmail.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "PaymentCalendar\\": "src/"
+    }
+  }
+}
