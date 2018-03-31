@@ -1,14 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: walter.velasquez
- * Date: 29/03/2018
- * Time: 2:38 PM
- */
+
 namespace PaymentCalendar;
 
 use Datetime;
 
+/**
+ * Interface PaymentCalendarInterface
+ * @package PaymentCalendar
+ *
+ * Declares the PaymentCalendar functions.
+ */
 interface PaymentCalendarInterface {
 
   /**
@@ -31,14 +32,45 @@ interface PaymentCalendarInterface {
    * The array with the payment calendar information.
    *
    */
+
+  /**
+   * Generates the info to be exported.
+   *
+   * @return array
+   *   The array with the info.
+   */
   public function generateInfo();
 
+  /**
+   * Getter function for the start date.
+   *
+   * @return Datetime
+   *   The start date object.
+   */
   public function getStartDate();
 
+  /**
+   * Setter function for the start date.
+   *
+   * @param Datetime $start_date
+   *   The start date object.
+   */
   public function setStartDate(Datetime $start_date);
 
+  /**
+   * Getter function for the interval.
+   *
+   * @return mixed
+   *   The interval value.
+   */
   public function getInterval();
 
+  /**
+   * Setter function for the interval.
+   *
+   * @param $interval
+   *   The interval value.
+   */
   public function setInterval($interval);
 
 }

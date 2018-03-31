@@ -6,48 +6,57 @@ use DateTime;
 use DateInterval;
 
 /**
- * Created by PhpStorm.
- * User: walter.velasquez
- * Date: 29/03/2018
- * Time: 2:39 PM
+ * Class PaymentCalendarBase
+ * @package PaymentCalendar
+ *
+ * Abstract definition of the PaymentCalendar.
  */
-
 abstract class PaymentCalendarBase implements PaymentCalendarInterface {
 
+  /**
+   * The start date object.
+   *
+   * @var DateTime
+   */
   protected $startDate;
 
+  /**
+   * The interval value.
+   *
+   * @var mixed
+   */
   protected $interval;
 
   /**
-   * @return mixed
+   * @inheritdoc
    */
   public function getStartDate() {
     return $this->startDate;
   }
 
   /**
-   * @param mixed $startDate
+   * @inheritdoc
    */
   public function setStartDate(Datetime $start_date) {
     $this->startDate = $start_date;
   }
 
   /**
-   * @return mixed
+   * @inheritdoc
    */
   public function getInterval() {
     return $this->interval;
   }
 
   /**
-   * @param mixed $interval
+   * @inheritdoc
    */
   public function setInterval($interval) {
     $this->interval = $interval;
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function generateFile($filename) {
     $header = $this->generateHeader();
@@ -65,6 +74,12 @@ abstract class PaymentCalendarBase implements PaymentCalendarInterface {
     return TRUE;
   }
 
+  /**
+   * Generates the header structure.
+   *
+   * @return array
+   *   The header structure array.
+   */
   protected function generateHeader() {
     $header = [
       'month name',
@@ -76,7 +91,7 @@ abstract class PaymentCalendarBase implements PaymentCalendarInterface {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   public function generateInfo() {
     $output = [];
@@ -107,6 +122,15 @@ abstract class PaymentCalendarBase implements PaymentCalendarInterface {
     return $output;
   }
 
+  /**
+   * Modifies the last day of the month if it is a weekend day.
+   *
+   * @param DateTime
+   *   The last day of the month object.
+   *
+   * @return DateTime
+   *   The modified Datetime object.
+   */
   protected function resolveWeekendDays(Datetime $last_day) {
     $day_of_week = $last_day->format('N');
 

@@ -10,6 +10,7 @@ use PaymentCalendar\PaymentManager;
 use PaymentCalendar\PaymentCalendar;
 
 require 'vendor/autoload.php';
+
 echo "Welcome to the payment calendar application.\n
 The default settings are:
   - Start date is the current date
