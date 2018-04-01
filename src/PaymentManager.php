@@ -1,33 +1,58 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: walter.velasquez
- * Date: 30/03/2018
- * Time: 10:22 PM
- */
 
 namespace PaymentCalendar;
 
 use Datetime;
 
-
+/**
+ * Class PaymentManager.
+ *
+ * @package PaymentCalendar
+ */
 class PaymentManager {
 
-  private $output;
+  /**
+   * The PaymentCalendar object.
+   *
+   * @var \PaymentCalendar\PaymentCalendarInterface
+   */
+  private $paymentCalendar;
 
-  public function setOutput(PaymentCalendarInterface $outputType, $start_date = '', $interval = 12) {
-    $this->output = $outputType;
+  /**
+   * Sets the output object.
+   *
+   * @param \PaymentCalendarInterface $payment_calendar
+   *   The PaymentCalendar object.
+   * @param string $start_date
+   *   The start date value.
+   * @param mixed $interval
+   *   The interval value.
+   */
+  public function setPaymentCalendar(PaymentCalendarInterface $payment_calendar, $start_date = '', $interval = 12) {
+    $this->paymentCalendar = $payment_calendar;
     // Create the datetime object.
     if (empty($start_date)) {
-      $start_date = date('Y-n');
+      $start_date = date('Y-n-d');
     }
     $date = Datetime::createFromFormat('Y-n-d', $start_date);
-    $this->output->setStartDate($date);
-    $this->output->setInterval($interval);
+    if (!$date instanceof Datetime) {
+      return FALSE;
+    }
+    $this->paymentCalendar->setStartDate($date);
+    $this->paymentCalendar->setInterval($interval);
   }
 
+  /**
+   * Generates the output file.
+   *
+   * @param string $filename
+   *   The filename value.
+   *
+   * @return bool
+   *   The result of the generation process.
+   */
   public function generateOutput($filename) {
-    return $this->output->generateFile($filename);
+    return $this->paymentCalendar->generateFile($filename);
   }
 
 }

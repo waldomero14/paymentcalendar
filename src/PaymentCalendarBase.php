@@ -2,21 +2,20 @@
 
 namespace PaymentCalendar;
 
-use DateTime;
+use Datetime;
 use DateInterval;
 
 /**
- * Class PaymentCalendarBase
- * @package PaymentCalendar
+ * Class PaymentCalendarBase.
  *
- * Abstract definition of the PaymentCalendar.
+ * @package PaymentCalendar
  */
 abstract class PaymentCalendarBase implements PaymentCalendarInterface {
 
   /**
    * The start date object.
    *
-   * @var DateTime
+   * @var \Datetime
    */
   protected $startDate;
 
@@ -26,6 +25,11 @@ abstract class PaymentCalendarBase implements PaymentCalendarInterface {
    * @var mixed
    */
   protected $interval;
+
+  public function __construct() {
+    $this->startDate = new Datetime();
+    $this->interval = 12;
+  }
 
   /**
    * @inheritdoc
@@ -101,22 +105,21 @@ abstract class PaymentCalendarBase implements PaymentCalendarInterface {
       $last_day = clone $this->startDate;
       // Gets the last day of this month.
       $last_day = $last_day->modify('last day of this month');
-      // Get the number of days of the next month.
+      // Get the next month object.
       $next_month_number = $last_day->format('n') + 1;
       $next_month_number = $last_day->format('Y') . '-' . $next_month_number . '-15';
-      $next_month = Datetime::createFromFormat('Y-m-d', $next_month_number);
-      $number = $next_month->format('t');
+      $next_month = Datetime::createFromFormat('Y-n-d', $next_month_number);
 
+      // Modify the dates if needed.
       $salary = $this->resolveWeekendDays($last_day);
-      $bonus = $this->resolveWeekendDays($next_month);
+      $bonus = $this->resolveWeekendDays($next_month, 'bonus');
 
       $output[$i]['month'] = $salary->format('Y-F');
-      $output[$i]['salary'] = $salary->format('Y-m-d');
-      $output[$i]['bonus'] = $bonus->format('Y-m-d');
+      $output[$i]['salary'] = $salary->format('Y-n-d');
+      $output[$i]['bonus'] = $bonus->format('Y-n-d');
 
       // Increase the starting date.
-      $interval = new DateInterval('P' . $number . 'D');
-      $this->startDate->add($interval);
+      $this->startDate = $next_month;
     }
 
     return $output;
@@ -125,20 +128,29 @@ abstract class PaymentCalendarBase implements PaymentCalendarInterface {
   /**
    * Modifies the last day of the month if it is a weekend day.
    *
-   * @param DateTime
+   * @param \Datetime $last_day
    *   The last day of the month object.
+   * @param string $type
+   *   The processed date type.
    *
-   * @return DateTime
+   * @return \Datetime
    *   The modified Datetime object.
    */
-  protected function resolveWeekendDays(Datetime $last_day) {
+  protected function resolveWeekendDays(Datetime $last_day, $type = 'salary') {
     $day_of_week = $last_day->format('N');
 
     if ($day_of_week > 5) {
-      $sub = $day_of_week - 5;
-      $last_day->sub(new DateInterval('P' . $sub . 'D'));
+      if ($type == 'salary') {
+        $sub = $day_of_week - 5;
+        $last_day->sub(new DateInterval('P' . $sub . 'D'));
+      }
+      elseif ($type == 'bonus') {
+        $add = 10 - $day_of_week;
+        $last_day->add(new DateInterval('P' . $add . 'D'));
+      }
     }
 
     return $last_day;
   }
+
 }

@@ -1,9 +1,8 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: walter.velasquez
- * Date: 29/03/2018
- * Time: 4:18 PM
+ * @file
+ * Init file of the payment calendar application.
  */
 
 use PaymentCalendar\PaymentManager;
@@ -11,22 +10,24 @@ use PaymentCalendar\PaymentCalendar;
 
 require 'vendor/autoload.php';
 
-echo "Welcome to the payment calendar application.\n
+// Initial message.
+echo "******************************************************************
+Welcome to the payment calendar application.\n
 The default settings are:
   - Start date is the current date
   - The number of months to be generated is 12
-  - The filename is \"calendar.csv\"\n
   Do you want to change this settings? Type 'no' if you want to generate the file with the default settings: ";
-$handle = fopen ("php://stdin","r");
+// Read and validate the value entered by the user.
+$handle = fopen("php://stdin", "r");
 $line = fgets($handle);
+// If the user uses the default values, then they are set.
 if (trim($line) != 'yes') {
   $start_date = '';
 
   $interval = 12;
-
-  $filename = 'calendar';
 }
 else {
+  // Gets and validates the year value.
   while (empty($year)) {
     echo "Enter the starting year:\n";
     $handle = fopen("php://stdin", "r");
@@ -39,6 +40,7 @@ else {
     }
   }
 
+  // Gets and validates the month value.
   while (empty($month)) {
     echo "Enter the starting month in numeric format:\n";
     $handle = fopen("php://stdin", "r");
@@ -51,8 +53,10 @@ else {
     }
   }
 
+  // Builds the date value to follow the Y-n-d format.
   $start_date = "$year-$month-15";
 
+  // Gets and validates the interval value.
   while (empty($interval)) {
     echo "Enter the number of months you want to generate:\n";
     $handle = fopen("php://stdin", "r");
@@ -65,21 +69,26 @@ else {
     }
   }
 
-  while (empty($filename)) {
-    echo "Enter the filename without the extension:\n";
-    $handle = fopen("php://stdin", "r");
-    $line = fgets($handle);
-
-    $filename = trim($line);
-  }
 }
-echo "\n";
-echo "Thank you, continuing...\n";
 
+// Gets and validates the filename value.
+while (empty($filename)) {
+  echo "Enter the filename without the extension:\n";
+  $handle = fopen("php://stdin", "r");
+  $line = fgets($handle);
+
+  $filename = trim($line);
+}
+
+echo "\nThank you, continuing...\n";
+
+// Creates the manager and sets the default calendar object.
 $calendar = new PaymentManager();
-$calendar->setOutput(new PaymentCalendar(), $start_date, $interval);
+$calendar->setPaymentCalendar(new PaymentCalendar(), $start_date, $interval);
+
+// Generate the file.
 $file = $calendar->generateOutput($filename);
 
 if ($file) {
-  echo "Thanks. The file \"$filename.csv\" is in the export folder.";
+  echo "\nThanks. The file \"$filename.csv\" was created in the export folder.";
 }

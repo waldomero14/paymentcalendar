@@ -5,7 +5,8 @@ namespace PaymentCalendar;
 use Datetime;
 
 /**
- * Interface PaymentCalendarInterface
+ * Interface PaymentCalendarInterface.
+ *
  * @package PaymentCalendar
  *
  * Declares the PaymentCalendar functions.
@@ -15,23 +16,13 @@ interface PaymentCalendarInterface {
   /**
    * Generates the exported file.
    *
-   * @param $location
+   * @param string $filename
    *   The location where the file will be saved.
    *
-   * @return mixed
+   * @return bool
+   *   Returns true if the file was saved.
    */
   public function generateFile($filename);
-
-  /**
-   * Generates the information to be exported.
-   *
-   * @param $start_date
-   * @param $end_date
-   *
-   * @return array The array with the payment calendar information.
-   * The array with the payment calendar information.
-   *
-   */
 
   /**
    * Generates the info to be exported.
@@ -44,7 +35,7 @@ interface PaymentCalendarInterface {
   /**
    * Getter function for the start date.
    *
-   * @return Datetime
+   * @return \Datetime
    *   The start date object.
    */
   public function getStartDate();
@@ -52,7 +43,7 @@ interface PaymentCalendarInterface {
   /**
    * Setter function for the start date.
    *
-   * @param Datetime $start_date
+   * @param \Datetime $start_date
    *   The start date object.
    */
   public function setStartDate(Datetime $start_date);
@@ -68,7 +59,7 @@ interface PaymentCalendarInterface {
   /**
    * Setter function for the interval.
    *
-   * @param $interval
+   * @param string $interval
    *   The interval value.
    */
   public function setInterval($interval);

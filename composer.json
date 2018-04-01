@@ -8,9 +8,10 @@
       "email": "wivan.vel@gmail.com"
     }
   ],
-  "require": {},
   "require-dev": {
-    "phpdocumentor/phpdocumentor": "2.*"
+    "drupal/coder": "dev-8.x-2.x",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+    "phpunit/phpunit": "^5"
   },
   "autoload": {
     "psr-4": {
